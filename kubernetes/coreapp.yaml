@@ -12,7 +12,7 @@ spec:
     maxReplicas: 3
     minReplicas: 2
     scaleTargetRef:
-        apiVersion: extensions/v1beta1
+        apiVersion: apps/v1
         kind: Deployment
         name: whatsapp-coreapp-deployment
     targetCPUUtilizationPercentage: 70
@@ -44,13 +44,16 @@ spec:
     selector:
         name: whatsapp-coreapp
 ---
-apiVersion: apps/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
     name: whatsapp-coreapp-deployment
     namespace: default
 spec:
     replicas: 2
+    selector:
+      matchLabels:
+        name: whatsapp-coreapp
     template:
         metadata:
             labels:
@@ -59,7 +62,7 @@ spec:
             restartPolicy: 'Always'
             containers:
                 - name: whatsapp-coreapp
-                  image: docker.whatsapp.biz/coreapp:v2.25.1
+                  image: docker.whatsapp.biz/coreapp:v2.27.12
                   imagePullPolicy: IfNotPresent
                   resources:
                       limits:
